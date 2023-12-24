@@ -8,17 +8,17 @@ function isPalindrome(str) {
 
   let modifiedStr = str.replace(/[^a-z]/gi, "");
   modifiedStr = modifiedStr.toLowerCase();
-  console.log(modifiedStr);
+  //  console.log(modifiedStr);
 
   const modifiedArr = new Array(...modifiedStr);
-  console.log(modifiedArr)
+  // console.log(modifiedArr)
   const result = modifiedArr.reverse().join('');
-  console.log(result);
+  //console.log(result);
   return result === modifiedStr;
 
 
 }
-console.log(isPalindrome("openai").toString())
+//console.log(isPalindrome("openai").toString())
 
 
 module.exports = isPalindrome;
