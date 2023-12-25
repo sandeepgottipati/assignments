@@ -6,18 +6,55 @@
  */
 
 function wait1(t) {
+    const beforeTime = new Date();
+    return new Promise((resolve) => {
+        setTimeout(() => {
 
+            resolve(new Date() - beforeTime);
+        }, t * 1000)
+    })
 }
 
 function wait2(t) {
-
+    const beforeTime = new Date();
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(new Date() - beforeTime);
+        }, t * 1000)
+    })
 }
 
 function wait3(t) {
-
+    const beforeTime = new Date();
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(new Date() - beforeTime);
+        }, t * 1000)
+    })
 }
 
 function calculateTime(t1, t2, t3) {
+    let totalTime = 0;
+
+
+    return new Promise((resolve) => {
+        wait1(t1).then((value) => {
+            totalTime += value;
+
+            return wait2(t2)
+
+        }).then((value) => {
+
+            totalTime += value;
+            return wait3(t3);
+        }).then((value) => {
+
+
+            totalTime += value;
+            resolve(totalTime);
+        })
+
+    })
 
 }
 
