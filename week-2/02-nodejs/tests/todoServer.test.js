@@ -11,7 +11,7 @@ describe('Todo API', () => {
 
   beforeAll((done) => {
     if (globalServer) {
-        globalServer.close();
+      globalServer.close();
     }
     globalServer = server.listen(3000);
     done()
@@ -76,6 +76,7 @@ describe('Todo API', () => {
 
   test('should retrieve a specific todo item by ID', (done) => {
     http.get(`${baseUrl}/todos/${createdTodoId}`, (res) => {
+      console.log(res.statusCode);
       expect(res.statusCode).toBe(200);
       let data = '';
 
@@ -85,6 +86,9 @@ describe('Todo API', () => {
 
       res.on('end', () => {
         const todo = JSON.parse(data);
+        //console.log(todo);
+        console.log(todo.id);
+        console.log(createdTodoId);
         expect(todo.id).toBe(createdTodoId);
         done();
       });

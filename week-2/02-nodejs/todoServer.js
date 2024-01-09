@@ -39,11 +39,69 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+const express = require('express');
+const uuid = require('uuid');
+const generateId = uuid.v4;
+let todos = []
+const app = express();
+app.use(express.json());
+
+app.get('/todos', (request, response) => {
+
+  response.json(todos);
+
+})
+app.get('/todos/:id', (request, response) => {
+  const { id } = request.params;
+  const todoIndex = todos.findIndex((todo) => todo.id === id);
+  console.log(todoIndex);
+  todoIndex !== -1 ? response.status(200).json(todo) : response.sendStatus(404);
+});
+app.post('/todos', (req, res) => {
+  const { description, title, completed } = req.body;
+
+
+  let newTodo = { id: generateId(), description, title, completed };
+  todos.push(newTodo);
+
+  res.status(201).json(newTodo);
+
+})
+// update todo
+app.put("/todos/:id", (req, res) => {
+  const { id } = req.params;
+  let todoIndex = todos.findIndex((todo) => {
+    return todo.id === id;
+  })
+  if (todoIndex !== -1) {
+    const { title, description, completed } = req.body;
+
+    todos[todoIndex] = {
+      ...todos[todoIndex],
+      title,
+      description,
+      completed
+    }
+    res.sendStatus(200);
+
+  }
+  else {
+    res.sendStatus(404);
+  }
+})
+
+app.delete("/todos/:id", (req, res) => {
+  const { id } = req.params;
+  let todoIndex = todos.findIndex((todo) => todo.id === id);
+  if (todoIndex === -1) {
+    res.sendStatus(404);
+  }
+  else {
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    todos.splice(0, todos.length, ...updatedTodos);
+    res.sendStatus(200);
+
+  }
+})
+app.listen(3000, () => console.log('server started at port :3000'))
+module.exports = app;
